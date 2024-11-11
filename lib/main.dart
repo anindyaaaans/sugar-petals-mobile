@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sugar_petals/menu.dart';
+import 'package:sugar_petals/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());

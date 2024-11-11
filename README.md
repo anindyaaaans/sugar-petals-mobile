@@ -69,3 +69,59 @@
     },
     
     ```
+
+## TUGAS 8
+
+1. **Apa kegunaan `const` di Flutter? Jelaskan apa keuntungan ketika menggunakan `const` pada kode Flutter. Kapan sebaiknya kita menggunakan `const`, dan kapan sebaiknya tidak digunakan?**
+    
+    `const` digunakan untuk mendefinisikan objek yang tidak akan berubah selama aplikasi berjalan. Keuntungannya adalah penghematan memori karena objek `const` hanya dibuat sekali dan bisa dipakai ulang. `const` sebaiknya digunakan untuk widget atau data yang statis, misalnya pada teks atau ikon. Tetapi, tidak cocok untuk elemen yang berubah-ubah nilainya atau interaktif, seperti tombol dengan aksi dinamis.
+    
+2. **Jelaskan dan bandingkan penggunaan *Column* dan *Row* pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!**
+    
+    `Column` menata elemen secara vertikal, sedangkan `Row` menata elemen secara horizontal.
+    
+    - **Contoh Column:**
+    
+    ```dart
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Nama: $_name'),
+        Text('Deskripsi: $_description'),
+        Text('Harga: $_price'),
+        Text('Sweet level: $_sweetlevel'),
+      ],
+    ),
+    ```
+    
+    - **Contoh Row:**
+    
+    ```dart
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        InfoCard(title: 'NPM', content: npm),
+        InfoCard(title: 'Name', content: name),
+        InfoCard(title: 'Class', content: className),
+      ],
+    ),
+    
+    ```
+    
+3. **Sebutkan apa saja elemen input yang kamu gunakan pada halaman *form* yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!**
+    
+    Pada form ini, saya pakai TextFormField untuk input teks (nama, deskripsi, harga, dan sweet level). Ada elemen lain di Flutter seperti Checkbox, DropdownButton, atau Slider, tetapi tidak saya pakai karena input di form ini fokusnya teks. Checkbox atau Dropdown biasanya lebih cocok buat pilihan terbatas, sementara form ini lebih ke input bebas.
+    
+4. **Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?**
+    
+    Di Flutter, kita bisa atur tema lewat `ThemeData` di `MaterialApp`. Misalnya, saya atur `colorScheme` untuk bikin warna aplikasi seragam. Dengan cara ini, elemen-elemen seperti AppBar dan tombol pakai warna yang konsisten. Contoh pengaturan tema:
+    
+    ```dart
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink,).copyWith(secondary: Colors.pink[400]),
+    )
+    
+    ```
+    
+5. **Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?**
+    Untuk navigasi antar halaman, saya menggunakan `Navigator.push` ketika ingin berpindah ke halaman lain dan menyimpan riwayat halaman sebelumnya. Jika saya ingin mengganti halaman tanpa memberikan opsi untuk kembali, saya menggunakan `Navigator.pushReplacement`, yang menggantikan halaman saat ini dengan halaman baru. Selain itu, saya juga menggunakan `Navigator.pop` untuk kembali ke halaman sebelumnya dalam tumpukan halaman ketika pengguna menekan tombol "kembali" atau sesuai kebutuhan navigasi lainnya.
