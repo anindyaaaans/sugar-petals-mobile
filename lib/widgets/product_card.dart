@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sugar_petals/screens/productentry_form.dart';
+import 'package:sugar_petals/screens/list_productentry.dart';
+import 'package:sugar_petals/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ItemHomepage {
   final String name;
@@ -34,6 +38,13 @@ class ItemCard extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => ProductEntryFormPage()),
             );
+          }
+          else if (item.name == "Lihat Produk") {
+              Navigator.push(context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductEntryPage()
+                  ),
+              );
           }
         },
         // Container untuk menyimpan warna latar belakang dan border radius
