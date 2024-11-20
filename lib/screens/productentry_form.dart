@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:sugar_petals/screens/menu.dart';
 import 'package:sugar_petals/widgets/left_drawer.dart';
 
 class ProductEntryFormPage extends StatefulWidget {
@@ -17,6 +22,8 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -147,38 +154,39 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                       backgroundColor: MaterialStateProperty.all(
                           Theme.of(context).colorScheme.primary),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Produk berhasil tersimpan'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Nama: $_name'),
-                                    Text('Deskripsi: $_description'),
-                                    Text('Harga: $_price'),
-                                    Text('Sweet level: $_sweetlevel'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                  },
-                                ),
-                              ],
+                    onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                            // Kirim ke Django dan tunggu respons
+                            // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                            final response = await request.postJson(
+                                "http://127.0.0.1:8000/create-flutter/",
+                                jsonEncode(<String, String>{
+                                    'name': _name,
+                                    'description': _description,
+                                    'price': _price.toString(),
+                                    'sweet_level': _sweetlevel.toString(),
+                                }),
                             );
-                          },
-                        );
-                      }
-                    },
+                            if (context.mounted) {
+                                if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                    content: Text("Produk baru berhasil disimpan!"),
+                                    ));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                                    );
+                                } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                        content:
+                                            Text("Terdapat kesalahan, silakan coba lagi."),
+                                    ));
+                                }
+                            }
+                        }
+                    },  
                     child: const Text(
                       "Simpan",
                       style: TextStyle(color: Colors.white),
